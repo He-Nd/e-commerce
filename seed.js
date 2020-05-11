@@ -19,6 +19,13 @@ mongoose.connection.dropCollection("products",(err)=>{
             img: "https://cdn.pixabay.com/photo/2015/12/08/00/55/london-1082180_960_720.jpg"
     
         },
+        {
+            name: "Elephent",
+            price: 5,
+            description: "a colorful drawing for elephent animal",
+            img: "https://cdn.pixabay.com/photo/2020/05/07/20/48/elephant-5143133_960_720.png"
+
+        }
     ],
         (err) => {
             if(err){
