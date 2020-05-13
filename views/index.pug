@@ -1,21 +1,21 @@
 doctype
-html(lang='en')
-    head
-        meta(charset='utf-8')
-        title hey
-        link(rel="stylesheet", href="bootstrap.min.css")
+html(lang="en")
+    include parts/head.pug
     body
+
 
         nav.navbar.navbar-dark.bg-primary
             a.navbar-brand(href="/") Logo
-            a.nav-link(href="/login") Login
+            div
+                a.nav-link(href="/login") Login
+                a.nav-link(href="/register") Register
 
     div.container-fluid.p-4.d-flex
 
         each product in products
 
             div.card.m-2(style="width: 18rem;")
-                img.card-img-top(scr =' ', alt="Card image cap")
+                img.card-img-top(src=product.img, alt="Card image cap")
                 div.card-body
                     h5.card-title #{product.name} #{product.price}₺
                     p.card-text #{product.description} 

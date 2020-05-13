@@ -34,4 +34,8 @@ catch(err){
 }
 });
 
+app.get("/register", (req, res, next)=>{
+    res.render("register");
+})
+
 app.listen(process.env.PORT, ()=>{console.log("server started!")});
