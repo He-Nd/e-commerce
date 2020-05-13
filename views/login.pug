@@ -1,0 +1,19 @@
+doctype
+html(lang="en")
+    include parts/head.pug
+    body
+
+    include parts/navbar.pug   
+    div.w-50.mx-auto.mt-5.p-3
+        h1.text-center Login
+        form(method="POST", action="/login")
+            div.form-group
+                label(for="exampleInputEmail1") Email address
+                input.form-control#exampleInputEmail1(name="username", type="text",  aria-describedby="emailHelp", placeholder="Enter email")
+                
+  
+            div.form-group
+                label(for="exampleInputPassword1") Password
+                input.form-control#exampleInputPassword1(name="password", type="password", placeholder="Password")
+            button.btn.btn-primary(type="submit") Login
+
