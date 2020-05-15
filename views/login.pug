@@ -3,7 +3,9 @@ html(lang="en")
     include parts/head.pug
     body
 
-    include parts/navbar.pug   
+    include parts/navbar.pug 
+
+    if !status  
     div.w-50.mx-auto.mt-5.p-3
         h1.text-center Login
         form(method="POST", action="/login")
@@ -17,3 +19,10 @@ html(lang="en")
                 input.form-control#exampleInputPassword1(name="password", type="password", placeholder="Password")
             button.btn.btn-primary(type="submit") Login
 
+
+
+
+if status 
+    div.alert.alert-dismissible.w-50.mt-4.mx-auto(class= status === "fail" ? "alert-danger" : "alert-success" )
+        button.close(type="button",  data-dismiss="alert")
+        strong= message  

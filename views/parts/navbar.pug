@@ -1,5 +1,9 @@
 nav.navbar.navbar-dark.bg-primary
     a.navbar-brand(href="/") Logo
-        div
+    div
+        if !user
             a.nav-link(href="/login") Login
             a.nav-link(href="/register") Register
+        else
+            i.nav-link Welcom #{user.username}
+            a.nav-link(href="/logout") Log out
