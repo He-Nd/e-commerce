@@ -6,7 +6,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const Product = require("./models/product");
-const User = require("./models/user")
+const User = require("./models/user");
+const {checkToken, isLoggedInRedirect, isLoggedOutRedirect} = require("./middleware");
 
 
 
@@ -29,19 +30,20 @@ app.use(express.static("public"))
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser());
 
+
+
+
+app.use(checkToken);
+
 app.get("/", async (req, res, next)=>{
 try{
     const products = await Product.find()
-    const userToken = req.cookies.tkn;
-
-    let user;
-    if (userToken){
-        user = jwt.verify(userToken, process.env.SECRET);
-    }
+    res.render("index", {products, user:req.user})
+}
+    
     
     // let first = product[0];
-    res.render("index", {products, user})
-}
+   
 
 catch(err){
     console.error(err.message);
@@ -49,11 +51,11 @@ catch(err){
 }
 });
 
-app.get("/register",(req, res, next)=>{
+app.get("/register",isLoggedInRedirect,(req, res, next)=>{
     res.render("register");
 })
 
-app.post("/register",  async (req, res, next)=>{
+app.post("/register",isLoggedInRedirect, async (req, res, next)=>{
         
     const username = req.body.username
     const password = req.body.password
@@ -89,11 +91,11 @@ app.post("/register",  async (req, res, next)=>{
 });
 
 
-app.get("/login", (req, res, next)=>{
+app.get("/login",isLoggedInRedirect, (req, res, next)=>{
     res.render("login",{status: req.query.status});
 })
 
-app.post("/login", async (req, res, next)=>{
+app.post("/login", isLoggedInRedirect, async (req, res, next)=>{
     const username = req.body.username
     const password = req.body.password
 
@@ -121,8 +123,24 @@ app.post("/login", async (req, res, next)=>{
         
     })
 
-app.get("/logout", (req, res, next)=>{
+app.get("/logout",isLoggedOutRedirect, (req, res, next)=>{
     res.clearCookie("tkn").redirect("/");
 })
+
+app.post("/addtocart/:productId", isLoggedOutRedirect, async (req, res, next)=>{
+
+    try{
+    const userDocumant = await User.findOne({username: req.username});
+    const productId = req.params.productId;
+    userDocumant.cart.push(productId);
+    await userDocumant.save();
+    console.log(userDocumant.cart);
+    res.redirect("/");
+}
+catch(err){
+    console.log(err.message)
+
+}
+});
 
 app.listen(process.env.PORT, ()=>{console.log("server started!")});

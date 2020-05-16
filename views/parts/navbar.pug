@@ -2,8 +2,8 @@ nav.navbar.navbar-dark.bg-primary
     a.navbar-brand(href="/") Logo
     div
         if !user
-            a.nav-link(href="/login") Login
-            a.nav-link(href="/register") Register
+            a.nav-link(href="/login") <i class="fas fa-sign-in-alt"></i> Login
+            a.nav-link(href="/register") <i class="fas fa-user-plus"></i> Register
         else
             i.nav-link Welcom #{user.username}
             a.nav-link(href="/logout") Log out
