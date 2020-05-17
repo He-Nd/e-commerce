@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const Product = require("./models/product");
 const User = require("./models/user");
-const {checkToken, isLoggedInRedirect, isLoggedOutRedirect} = require("./middleware");
+const {checkUser, isLoggedInRedirect, isLoggedOutRedirect, renderRoot, addToCart} = require("./middleware");
 
 
 
@@ -16,14 +16,17 @@ mongoose.set('useNewUrlParser', true);
 
 
 mongoose.connect(process.env.MONGO_CONNECTION_STRING)
-.then(()=>{console.log('Connected to MongoDB!')})
-.catch(()=>{console.error('MongoDB connection error!')});
-
+.then(()=>{console.log('Connected to MongoDB!');
 // ---for developing perposes
 
 // require("./seed");
 
 // ----
+
+})
+.catch(()=>{console.error('MongoDB connection error!')
+});
+
 
 app.set('view engine', 'pug')
 app.use(express.static("public"))
@@ -33,23 +36,20 @@ app.use(cookieParser());
 
 
 
-app.use(checkToken);
+app.use(checkUser);
 
-app.get("/", async (req, res, next)=>{
-try{
-    const products = await Product.find()
-    res.render("index", {products, user:req.user})
-}
-    
-    
-    // let first = product[0];
-   
+app.get("/", async (req, res, next) => {
+    try {
+      const products = await Product.find();
+  
+      return res.render("index", { products, user: req.user });
+    }
+     catch (err) {
+      console.error(err.message);
+      res.sendStatus(500);
+    }
+  });
 
-catch(err){
-    console.error(err.message);
-    res.sendStatus(500);
-}
-});
 
 app.get("/register",isLoggedInRedirect,(req, res, next)=>{
     res.render("register");
@@ -127,20 +127,26 @@ app.get("/logout",isLoggedOutRedirect, (req, res, next)=>{
     res.clearCookie("tkn").redirect("/");
 })
 
-app.post("/addtocart/:productId", isLoggedOutRedirect, async (req, res, next)=>{
+app.post("/cart/:productId", isLoggedOutRedirect,async (req, res, next) => {
+  try {
+    const userDocument = await User.findOne({ username: req.user.username });
 
-    try{
-    const userDocumant = await User.findOne({username: req.username});
     const productId = req.params.productId;
-    userDocumant.cart.push(productId);
-    await userDocumant.save();
-    console.log(userDocumant.cart);
-    res.redirect("/");
-}
-catch(err){
-    console.log(err.message)
 
-}
+    const product = await Product.findById(productId);
+
+    if (product) {
+      userDocument.cart.push(productId);
+      await userDocument.save();
+      res.status(200).send({productName:product.name})
+    } else {
+        return res.sendStatus(404);
+      
+    }
+  } catch (err) {
+    console.log(err.message);
+    res.sendStatus(500);
+  }
 });
 
 app.listen(process.env.PORT, ()=>{console.log("server started!")});

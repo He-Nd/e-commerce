@@ -1,6 +1,10 @@
 const jwt = require("jsonwebtoken");
+const Product = require("./models/product")
+const User = require("./models/user")
 
-const checkToken = (req, res, next)=>{
+
+
+const checkUser = (req, res, next)=>{
 const userToken = req.cookies.tkn;
     
     if (userToken){
@@ -24,4 +28,8 @@ const isLoggedOutRedirect = (req, res, next)=>{
     next();
 }
 
-module.exports = {checkToken, isLoggedInRedirect, isLoggedOutRedirect}
+
+
+
+
+module.exports = {checkUser, isLoggedInRedirect, isLoggedOutRedirect}

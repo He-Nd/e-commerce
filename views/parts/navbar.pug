@@ -6,4 +6,5 @@ nav.navbar.navbar-dark.bg-primary
             a.nav-link(href="/register") <i class="fas fa-user-plus"></i> Register
         else
             i.nav-link Welcom #{user.username}
+            a.nav-link(href="/cart") <i class="fas fa-shopping-cart"></i>  My cart #{user.cartCount}
             a.nav-link(href="/logout") Log out

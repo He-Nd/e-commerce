@@ -3,9 +3,12 @@ html(lang="en")
     include parts/head.pug
     body
         include parts/navbar.pug
-
-        div.container-fluid.p-4.d-flex
-
+        include parts/modal.pug
+        if status
+                include parts/alert.pug
+        div.container-fluid.p-4.d-flex.flex-wrap.justify-content-center
+            
+            
             each product in products
 
                 div.card.m-2(style="width: 18rem;")
@@ -13,42 +16,10 @@ html(lang="en")
                     div.card-body
                         h5.card-title #{product.name} #{product.price}₺
                         p.card-text #{product.description} 
-                        form(action="/addtocart/" + product._id, method="POST")
-                            button.btn.btn-primary(type="submit") Add to cart
+                        button.add-to-cart.btn.btn-primary(id=product.id) <i class="fas fa-cart-plus"></i> &nbsp;Add to cart
   
+        script(src="script.js")
+        
 
 
-
-    //-  nav.navbar.navbar-default.navbar-static-top
-    //-     .container
-    //-         .navbar-header
-    //-             button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
-    //-                 span.sr-only Toggle navigation
-    //-                 span.icon-bar
-    //-                 span.icon-bar
-    //-                 span.icon-bar
-    //-             a.navbar-brand(href='/') App Name
-    //-         #navbar.navbar-collapse.collapse
-    //-             ul.nav.navbar-nav
-    //-                 li(class=(title == 'Home') ? 'active' : null)
-    //-                     a(href='/') Home
-    //-                 li(class=(title == 'About') ? 'active' : null)
-    //-                     a(href='/about') About
-    //-             ul.nav.navbar-nav.navbar-right
-    //-                 if user
-    //-                     li.dropdown
-    //-                         a.navbar-avatar.dropdown-toggle(href='#', data-toggle='dropdown')
-    //-                             span #{user.name || user.email} &nbsp;
-    //-                             i.caret
-    //-                         ul.dropdown-menu
-    //-                             li
-    //-                                 a(href='/profile') Profile
-    //-                             li.divider(role='separator')
-    //-                             li
-    //-                                 a(href='/logout') Logout
-    //-                 else
-    //-                     li(class=(title == 'Log in') ? 'active' : null)
-    //-                         a(href='/login') Log-in
-    //-                     li(class=(title == 'Register') ? 'active' : null)
-    //-                         a(href='/register') Register
-    //- //- /.nav-collapse
+    

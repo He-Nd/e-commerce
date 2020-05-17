@@ -3,12 +3,26 @@ const productModel = require("./models/product");
 
 console.log("seed is running!");
 
+mongoose.connection.dropCollection("users", (err)=>{
+    if (errpr){
+        console.error(error.message)
+        console.log("^^^users collection couldn't be dropped")
+    }
+    else{
+        console.log("users dropped")
+    }
+
+})
 mongoose.connection.dropCollection("products",(err)=>{
     if(err){
         console.error(err.message);
-        return;
+        console.log("^^products collection couldn't be dropped")
     }
-    console.log("droped products collections!");
+    else{
+        console.log("droped products collections!");
+        
+    }
+    
 
     productModel.insertMany(
         [
