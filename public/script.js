@@ -7,18 +7,19 @@ for (i = 0 ; i < addToCartButtons.length ; i++){
         try{
        const result =  await axios.post(`/cart/${e.target.id}`);
 
-       if (result.status===200){
-           showModal('Success!',result.data.productName + " was added to your cart!");
+           showModal('Success!', result.data.productName + " was added to your cart!");
            setTimeout(hideModal,2000);
-       }
-        }
-       catch(err){
-           console.log(err.message)
-           showModal("something went wrong!", "Item was not added successfully");
-           setTimeout(hideModal,2000);
-       }
+
+    }
+    catch(err){
+        console.log(err);
+        showModal('Something went wrong!', "Item was not added to your cart!");
+        setTimeout(hideModal,2000);
+    }
+
+       
     })
-}
+};
 
 
 function showModal(header,body){
@@ -31,3 +32,6 @@ function hideModal(){
     document.querySelector(".modal").style.display= 'none';
 
 ;}
+
+
+

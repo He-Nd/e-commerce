@@ -1,28 +1,28 @@
 doctype
-html(lang="en")
-    include parts/head.pug
+html(lang='en')
+    include partials/head.pug
+
+
     body
+        include partials/navbar.pug
 
-    include parts/navbar.pug   
+        div.w-50.mx-auto.mt-5.p-4.card.rounded
+            h1.text-center.mb-4 Register
+            form(method="POST",action="/register")
+                div.form-group
+                    label(for="exampleInputEmail1") Username
+                    input.form-control#exampleInputEmail1(name="username",type="text",aria-describedby="emailHelp" placeholder="Enter email" required)
+                    small#emailHelp.form-text.text-muted We'll never share your email with anyone else.
+                div.form-group
+                    label(for="exampleInputPassword1") Password
+                    input.form-control#exampleInputPassword1(name="password",type="password",placeholder="Password" required)
+                p <small class="form-text text-muted"> This is a demo so you are not asked to confirm your password.</small>
+                button.btn.btn-primary(type="submit") Register
+
+    if status
+        include partials/alert.pug
 
 
-    div.w-50.mx-auto.mt-5.p-3
-        h1.text-center Register
-        form(method="POST", action="/register")
-            div.form-group
-                label(for="exampleInputEmail1") Username
-                input.form-control#exampleInputEmail1(name="username", type="text",  aria-describedby="emailHelp", placeholder="Enter email")
-                small.form-text.text-muted#emailHelp  We'll never share your email with anyone else.
+
   
-            div.form-group
-                label(for="exampleInputPassword1") Password
-                input.form-control#exampleInputPassword1(name="password",type="password", placeholder="Password")
-            button.btn.btn-primary(type="submit") Submit
-
-
-if status 
-    include parts/alert.pug
-
- 
-
 
